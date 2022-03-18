@@ -27,31 +27,32 @@ char *string_invert(char *str) {
   char *resultado;
   int dimension = strlen(str);
 
-  resultado = (char*)malloc((dimension+1)*sizeof(char*));
+  resultado = (char*)malloc((dimension+1)*sizeof(char));
 
-  if(resultado == NULL)
+  if(resultado == NULL){
+    stack_free(s);
     return NULL;
+  }
   
-  for(i = 0; i < dimension; i++){  
-    if(stack_push(s, &str[i]) == ERROR)
+  for(i = 0; str[i] != '\0'; i++){  
+    if(stack_push(s, &str[i]) == ERROR){
+      stack_free(s);
       return NULL;
+    }
     
   }
 
-  for(i = 0; i < dimension; i++){
-    if(stack_isEmpty(s) == FALSE){
-      resultado[i] = *(char*)stack_pop(s);
-      if(&resultado[i] == NULL)
-        return NULL;
+  for(i = 0; stack_isEmpty(s) == FALSE; i++){
+    resultado[i] = *(char*)stack_pop(s);
+    if(&resultado[i] == NULL){     
+      stack_free(s); 
+      return NULL;
     }
   }
+  resultado[i] = '\0';
   
-  if(stack_isEmpty(s) == TRUE){
-    stack_free(s);
-    return resultado;
-  }
-
-  return NULL;
+  stack_free(s);
+  return resultado;
 
 }
 
@@ -76,7 +77,7 @@ Status reverseWords(char *strout, char *strin) {
   /* No hacerlo implica un NO APTO */
 
   /* YOUR CODE HERE - TU CÓDIGO AQUÍ */
-  int i, j;
+  int i, j = 0;
   Stack *s;
   char *e;
   s = stack_init ();
@@ -84,27 +85,33 @@ Status reverseWords(char *strout, char *strin) {
     return ERROR;
   for (i = 0; i < strlen(strin); i++){
     if(strin[i] != ' '){
-      if(stack_push(s, &strin[i]) == ERROR) 
+      if(stack_push(s, &strin[i]) == ERROR){
+        stack_free(s);
         return ERROR;
-      else{
-        while (stack_isEmpty (s) == FALSE)
-        {
-          e = stack_pop(s);
-          if(e == NULL)
-            return ERROR;
-          strout[j] = *e;
-          j++;          
-        }
-        strout[j] = 32;
-        j++;
-       
-      }   
+      }
     }
+    if(strin[i] == ' '){
+      while (stack_isEmpty (s) == FALSE)
+      {
+        e = stack_pop(s);
+          if(e == NULL){   
+            stack_free(s);        
+            return ERROR;
+          }
+        strout[j] = *e;
+        j++;          
+      }
+      strout[j] = 32;
+      j++;       
+    }   
+    
   }
   while(stack_isEmpty(s) == FALSE){
     e = stack_pop(s);
-    if(e == NULL)
+    if(e == NULL){
+      stack_free(s);
       return ERROR;
+    }
     strout[j] = *e;
     j++;
   }
