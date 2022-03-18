@@ -1,7 +1,7 @@
 
 #include "stack_fDoble.h"
-#include <stdlib.h>
-#include <string.h>
+#include "reverse.h"
+
 /* Include here any other headers you need */
 
 /**
@@ -11,29 +11,48 @@
  **/
 
 char *string_invert(char *str) {
-  
-  str = (char*)malloc((strlen(str)+1)*sizeof(char));
-  if(str == NULL)
-    return NULL;
-  char *res;
-  res = (char*)malloc((strlen(str)+1)*sizeof(char));
-  if (salida == NULL)
-    return NULL;
+
+  /* It is MANDATORY that you use a stack to implement this function */
+  /* Failure to do so will result in a FAIL grade */
+
+  /* Es OBLIGATORIO usar una pila para implementar esta función */
+  /* No hacerlo implica un NO APTO */
+
+  /*YOUR CODE HERE - TU CÓDIGO AQUÍ */
   Stack *s;
-  int i;
   s = stack_init();
-  if(s == NULL)
+  int i;
+  if (s == NULL)
     return NULL;
-  for(i = 0; str[i]!='\0'; i++){
-    if(stack_isFull(s) == FALSE)
-      if(stack_push(s, &str[i])== ERROR)
-        return ERROR;
+  char *resultado;
+  int dimension = strlen(str);
+
+  resultado = (char*)malloc((dimension+1)*sizeof(char*));
+
+  if(resultado == NULL)
+    return NULL;
+  
+  for(i = 0; i < dimension; i++){  
+    if(stack_push(s, &str[i]) == ERROR)
+      return NULL;
+    
   }
-  for(i = 0;stack_isEmpty(s) == FALSE;i++){
-    res[i] = *(char*)stack_pop(s);
+
+  for(i = 0; i < dimension; i++){
+    if(stack_isEmpty(s) == FALSE){
+      resultado[i] = *(char*)stack_pop(s);
+      if(&resultado[i] == NULL)
+        return NULL;
+    }
   }
-  stack_free(s);
-  return res;
+  
+  if(stack_isEmpty(s) == TRUE){
+    stack_free(s);
+    return resultado;
+  }
+
+  return NULL;
+
 }
 
 /**
@@ -50,14 +69,46 @@ char *string_invert(char *str) {
  **/
 
 Status reverseWords(char *strout, char *strin) {
-  strout = (char*)malloc(strlen(strin)*sizeof(char));
-  strin = (char*)malloc(strlen(strin)*sizeof(char));
-  if(strout == NULL || strin == NULL)
-    return NULL;
-  char *p1, *
-  strtok(strin, "\0");
-  
-  
+  /* It is MANDATORY that you use a stack to implement this function */
+  /* Failure to do so will result in a FAIL grade */
 
-  return ERROR; // remove this line once you add your code
+  /* Es OBLIGATORIO usar una pila para implementar esta función */
+  /* No hacerlo implica un NO APTO */
+
+  /* YOUR CODE HERE - TU CÓDIGO AQUÍ */
+  int i, j;
+  Stack *s;
+  char *e;
+  s = stack_init ();
+  if (s == NULL)
+    return ERROR;
+  for (i = 0; i < strlen(strin); i++){
+    if(strin[i] != ' '){
+      if(stack_push(s, &strin[i]) == ERROR) 
+        return ERROR;
+      else{
+        while (stack_isEmpty (s) == FALSE)
+        {
+          e = stack_pop(s);
+          if(e == NULL)
+            return ERROR;
+          strout[j] = *e;
+          j++;          
+        }
+        strout[j] = 32;
+        j++;
+       
+      }   
+    }
+  }
+  while(stack_isEmpty(s) == FALSE){
+    e = stack_pop(s);
+    if(e == NULL)
+      return ERROR;
+    strout[j] = *e;
+    j++;
+  }
+  stack_free (s);
+  return OK;
+
 };

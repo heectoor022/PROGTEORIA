@@ -1,4 +1,6 @@
 #include "types.h"
+#include <stdlib.h>
+#include <string.h>
 
 /**
  * @brief: Reverse the words of an input string to an output string.
