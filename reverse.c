@@ -19,6 +19,8 @@ char *string_invert(char *str) {
   /* No hacerlo implica un NO APTO */
 
   /*YOUR CODE HERE - TU CÓDIGO AQUÍ */
+  if(str == NULL)
+    return NULL;
   Stack *s;
   s = stack_init();
   int i;
@@ -77,6 +79,8 @@ Status reverseWords(char *strout, char *strin) {
   /* No hacerlo implica un NO APTO */
 
   /* YOUR CODE HERE - TU CÓDIGO AQUÍ */
+  if(strout == NULL || strin == NULL)
+    return ERROR;
   int i, j = 0;
   Stack *s;
   char *e;
@@ -115,6 +119,7 @@ Status reverseWords(char *strout, char *strin) {
     strout[j] = *e;
     j++;
   }
+  strout[j] = '\0';
   stack_free (s);
   return OK;
 
